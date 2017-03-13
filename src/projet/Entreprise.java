@@ -25,9 +25,11 @@ import java.util.logging.Logger;
 public class Entreprise {
     private HashMap<String, Competences> competences;
     private HashMap<Integer, Personnel> personnel;
+    private CompetencesFrame vue;
     
     
-    public Entreprise(){
+    public Entreprise(CompetencesFrame vue){
+        this.vue = vue;
         competences = new HashMap<String, Competences>();
         personnel = new HashMap<Integer, Personnel>();
     }
@@ -102,6 +104,29 @@ public class Entreprise {
         reader.close();
     }
     
+    /**
+     * Ajoute les compétences au personnel à l'aide des données contenues dans un classeur excel (format .csv)
+     * @param chemin
+     *          Le chemin du fichier à lire (.csv) contenu dans les sources du projet
+     * @throws IOException
+     * @throws ParseException 
+     */
+    //competences_personnel.csv
+    //public void importerPersonnel(File fichierPersonnel) throws IOException{
+    public void lierCompetencesPersonnel() throws IOException, ParseException{
+        //CSVReader reader = new CSVReader(new FileReader(fichierPersonnel));
+        CSVReader reader = new CSVReader(new FileReader("src/competences_personnel.csv"));
+        String [] nextLine;
+        while ((nextLine = reader.readNext()) != null){
+            String[] tab = nextLine[0].split(";");
+            int keyPersonnel = Integer.parseInt(tab[0]);
+            Personnel p = personnel.get(keyPersonnel);
+            for(int i = 1; i<tab.length; i++){
+                p.addCompetences(tab[i], competences.get(tab[i]));
+            }
+        }
+        reader.close();
+    }
     
     /**
      * Importe des compétences contenue dans un classeur excel (format .csv) dans les données de l'entreprise
@@ -126,6 +151,8 @@ public class Entreprise {
         }
         reader.close();
     }
+    
+    
     
     /**
      * Ajoute une personne à la liste du personnel de l'entreprise
@@ -157,19 +184,28 @@ public class Entreprise {
         competences.put(code, c);
     }
     
-    public static void main(String args[]){
+    /*public static void main(String args[]){
         Entreprise e = new Entreprise();
         try {
             e.importerCompetences("src/liste_competences.csv");
+            e.importerPersonnel("src/liste_personnel.csv");
         } catch (IOException ex) {
             Logger.getLogger(Entreprise.class.getName()).log(Level.SEVERE, null, ex);
         } catch (ParseException ex) {
             Logger.getLogger(Entreprise.class.getName()).log(Level.SEVERE, null, ex);
         }
         e.competencesToString();
-        
-        
-    }
+        e.personnelToString();
+            
+        try {
+            e.lierCompetencesPersonnel();
+        } catch (IOException ex) {
+            Logger.getLogger(Entreprise.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ParseException ex) {
+            Logger.getLogger(Entreprise.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        e.personnelToString();
+    }*/
 }
     
 

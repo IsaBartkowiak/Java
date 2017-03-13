@@ -26,6 +26,7 @@ public class CompetencesFrame extends javax.swing.JFrame {
      */
     public CompetencesFrame() {
         initComponents();
+        Entreprise ecouteur = new Entreprise(this);
     }
 
     /**
@@ -222,13 +223,7 @@ public class CompetencesFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_bParcourirPersonnelMouseClicked
 
     private void tabNavigationMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tabNavigationMouseClicked
-        // TODO add your handling code here:
-        Entreprise e = new Entreprise();
-        for (Integer mapKey : e.getPersonnel().keySet()) {
-            // utilise ici hashMap.get(mapKey) pour accéder aux valeurs
-            System.out.println(mapKey + "-" + e.getPersonnel().get(mapKey));
-        }
-        tabPersonnel.getModel().setValueAt(evt, WIDTH, ICONIFIED);
+
     }//GEN-LAST:event_tabNavigationMouseClicked
 
     /**

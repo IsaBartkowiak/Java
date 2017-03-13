@@ -5,9 +5,13 @@
  */
 package projet;
 
+import com.opencsv.CSVReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,13 +22,14 @@ import java.util.logging.Logger;
 public class Personnel {
     private String nom, prenom;
     private Date dateEntree;
+    private HashMap<String, Competences> competences;
+    final static SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
     
     public Personnel(String nom, String prenom, String dateEntree){
         this.nom = nom;
         this.prenom = prenom;
-        SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
         try {
-            this.dateEntree = (Date) formatter.parse(dateEntree);
+            this.dateEntree = (Date) format.parse(dateEntree);
         } catch (ParseException ex) {
             Logger.getLogger(Personnel.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -37,11 +42,25 @@ public class Personnel {
         if (dateEntree.contains("."))
         s = ".";
         String date[] = dateEntree.split(s);*/
+        competences = new HashMap<String, Competences>();
     }
     
     @Override
     public String toString(){
-        return nom + "," + prenom + "," + dateEntree;
+        String tabC = "";
+        for(String mapKey : competences.keySet()){
+            tabC += mapKey + ", ";
+        }
+        String date = format.format(dateEntree);
+        return nom + "," + prenom + "," + date + "\n" + tabC + "\n";
+    }
+    
+    public void addCompetences(String clef, Competences c){
+        competences.put(clef, c);
+    }
+    
+    public HashMap<String, Competences> getCompetences(){
+        return competences;
     }
     
 }
